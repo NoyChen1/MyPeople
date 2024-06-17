@@ -1,6 +1,6 @@
 package com.example.mystore;
 
-import android.annotation.SuppressLint;
+
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -20,14 +20,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
 
 public class MainActivity extends AppCompatActivity {
 
     final String BASE_URL = "https://reqres.in/";
-    private TextView textView;
-    private RecyclerView recyclerView;
 
     private List<Data> users = new ArrayList<>();
     @Override
@@ -41,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         MyAdapter adapter = new MyAdapter(MainActivity.this, users);
         recyclerView.setAdapter(adapter);
@@ -67,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
         client.getUsers(1).enqueue(new Callback<UsersData>() {
             @Override
             public void onResponse(Call<UsersData> call, Response<UsersData> response) {
-                users.addAll(response.body().getData());
-                adapter.notifyDataSetChanged();
+                if(response.isSuccessful() && response.body() != null){
+                    users.addAll(response.body().getData());
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override

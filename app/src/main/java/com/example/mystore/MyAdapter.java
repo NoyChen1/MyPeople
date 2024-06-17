@@ -1,6 +1,5 @@
 package com.example.mystore;
 
-import android.accessibilityservice.GestureDescription;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -48,8 +47,4 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return users.size();
     }
 
-    public void updateUsers(List<Data> newUsers) {
-        users.addAll(newUsers);
-        notifyDataSetChanged();
-    }
 }
