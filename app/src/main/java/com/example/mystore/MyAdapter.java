@@ -2,6 +2,7 @@ package com.example.mystore;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,10 +17,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     Context context;
 
     List<Data> users;
+    private OnItemClickListener listener;
 
-    public MyAdapter(Context context, List<Data> users) {
+    public MyAdapter(Context context, List<Data> users, OnItemClickListener listener) {
         this.context = context;
         this.users = users;
+        this.listener = listener;
     }
 
 
@@ -31,15 +34,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.id.setText(users.get(position).getId() + "");
-        holder.firstName.setText(users.get(position).getFirst_name());
-        holder.lastName.setText(users.get(position).getLast_name());
-        holder.email.setText(users.get(position).getEmail());
-        String avatarUrl = users.get(position).getAvatar();
+        Data user = users.get(position);
+        holder.id.setText(user.getId() + "");
+        holder.firstName.setText(user.getFirst_name());
+        holder.lastName.setText(user.getLast_name());
+        holder.email.setText(user.getEmail());
+        String avatarUrl = user.getAvatar();
         Glide.with(holder.itemView.getContext())
                 .load(avatarUrl)
                 .into(holder.avatar);
-      //  holder.avatar.setImageResource(users.get(position).getAvatar());
+        //  holder.avatar.setImageResource(users.get(position).getAvatar());
+        holder.bind(user, listener);
     }
 
     @Override

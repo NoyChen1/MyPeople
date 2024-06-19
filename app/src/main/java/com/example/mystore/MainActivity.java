@@ -1,8 +1,11 @@
 package com.example.mystore;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,11 +27,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemClickListener {
 
     final String BASE_URL = "https://reqres.in/";
 
-    private List<Data> users = new ArrayList<>();
+    private List<Data> users = new LinkedList<>();
+    private MyAdapter adapter = new MyAdapter(MainActivity.this, users, this);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        MyAdapter adapter = new MyAdapter(MainActivity.this, users);
         recyclerView.setAdapter(adapter);
 
         Retrofit retrofit = new Retrofit.Builder().
@@ -49,34 +57,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         Client client = retrofit.create(Client.class);
-//        client.getUser("3").enqueue(new Callback<UserData>() {
-//            @Override
-//            public void onResponse(Call<UserData> call, Response<UserData> response) {
-//                textView.setText(response.body().getData().getEmail());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<UserData> call, Throwable throwable) {
-//                textView.setText(throwable.getMessage());
-//            }
-//        });
-        client.getUsers(1).enqueue(new Callback<UsersData>() {
-            @Override
-            public void onResponse(Call<UsersData> call, Response<UsersData> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    users.addAll(response.body().getData());
-                    adapter.notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<UsersData> call, Throwable throwable) {
-            }
-        });
-        client.getUsers(2).enqueue(new Callback<UsersData>() {
+        for(int i=0; i < 2; i++){
+            getUsers(client, i+1);
+        }
+
+
+    }
+
+    public void getUsers (Client client, int page){
+        client.getUsers(page).enqueue(new Callback<UsersData>() {
             @Override
             public void onResponse(Call<UsersData> call, Response<UsersData> response) {
                 users.addAll(response.body().getData());
+                users.sort((o1, o2) -> {
+                    int compare = Integer.compare(o1.getId(), o2.getId());
+                    return compare;
+                });
                 adapter.notifyDataSetChanged();
             }
 
@@ -84,9 +81,21 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<UsersData> call, Throwable throwable) {
             }
         });
-
-
-
     }
 
+    public void onItemClick(Data user) {
+
+        Intent intent = new Intent(this, UserActivity.class);
+        intent.putExtra("imageResId", user.getAvatar());
+        intent.putExtra("id", user.getId());
+        intent.putExtra("name", user.getFirst_name() + " " + user.getLast_name());
+        intent.putExtra("email", user.getEmail());
+        startActivity(intent);
+
+        // Handle the click event here
+        Toast.makeText(this, "Clicked: " + user.getFirst_name(), Toast.LENGTH_SHORT).show();
+    }
+
+
 }
+
