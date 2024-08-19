@@ -2,7 +2,6 @@ package com.example.mystore;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,10 +15,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     Context context;
 
-    List<Data> users;
+    List<UserData> users;
     private OnItemClickListener listener;
 
-    public MyAdapter(Context context, List<Data> users, OnItemClickListener listener) {
+    public MyAdapter(Context context, List<UserData> users, OnItemClickListener listener) {
         this.context = context;
         this.users = users;
         this.listener = listener;
@@ -34,7 +33,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Data user = users.get(position);
+        UserData user = users.get(position);
         holder.id.setText(user.getId() + "");
         holder.firstName.setText(user.getFirst_name());
         holder.lastName.setText(user.getLast_name());
@@ -52,4 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return users.size();
     }
 
+    public void setUsers(List<UserData> users){
+        this.users = users;
+    }
 }

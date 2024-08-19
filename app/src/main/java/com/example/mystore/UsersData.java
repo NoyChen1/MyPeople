@@ -29,7 +29,7 @@ public class UsersData {
     private int per_page;
     private int total;
     private int total_pages;
-    private List<Data> data;
+    private List<UserData> data;
     private Support support;
 
     public int getPage() {
@@ -64,11 +64,11 @@ public class UsersData {
         this.total_pages = total_pages;
     }
 
-    public List<Data> getData() {
+    public List<UserData> getData() {
         return data;
     }
 
-    public void setData(List<Data> data) {
+    public void setData(List<UserData> data) {
         this.data = data;
     }
 
@@ -79,6 +79,7 @@ public class UsersData {
     public void setSupport(Support support) {
         this.support = support;
     }
+
 //    public Data getUserById(int i) {
 //        for (Data user:users) {
 //            if(Integer.parseInt(user.getId()) == i)

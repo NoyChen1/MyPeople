@@ -45,7 +45,7 @@ public class UserActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(imageResId)
                 .into(userImage);
-        userId.setText(id+ "");
+        userId.setText(id + "");
         userName.setText(name);
         userEmail.setText(email);
 

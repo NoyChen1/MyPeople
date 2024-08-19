@@ -25,7 +25,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         email = itemView.findViewById(R.id.email);
     }
 
-    public void bind(final Data user, final OnItemClickListener listener) {
+    public void bind(final UserData user, final OnItemClickListener listener) {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

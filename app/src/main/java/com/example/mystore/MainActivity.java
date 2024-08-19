@@ -3,23 +3,26 @@ package com.example.mystore;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,10 +34,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     final String BASE_URL = "https://reqres.in/";
 
-    private List<Data> users = new LinkedList<>();
+    private List<UserData> users = new LinkedList<>();
     private MyAdapter adapter = new MyAdapter(MainActivity.this, users, this);
-
-
+    private UserDatabase usersDB;
+    private UserDao userDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        usersDB = Room.databaseBuilder(getApplicationContext(),
+                UserDatabase.class, "UsersDB").build();
+        userDao = usersDB.getUserDao();
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -69,12 +76,32 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         client.getUsers(page).enqueue(new Callback<UsersData>() {
             @Override
             public void onResponse(Call<UsersData> call, Response<UsersData> response) {
+                //saves the users localy
+                if(response != null && response.isSuccessful()){
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    executorService.execute(() -> {
+                        for (UserData user : response.body().getData()) {
+                            userDao.addUser(user);
+                            System.out.println("added user: " + user.getId() + "successfully");
+                        }
+                        users = userDao.getAllUsers();
+                        runOnUiThread(() ->{
+                            adapter.setUsers(users);
+                            adapter.notifyDataSetChanged();
+                        });
+
+                    });
+                }
+
+/*
+                users = usersDB.getUserDao().getAllUsers();
                 users.addAll(response.body().getData());
                 users.sort((o1, o2) -> {
                     int compare = Integer.compare(o1.getId(), o2.getId());
                     return compare;
                 });
-                adapter.notifyDataSetChanged();
+*/
+
             }
 
             @Override
@@ -83,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         });
     }
 
-    public void onItemClick(Data user) {
+    public void onItemClick(UserData user) {
 
         Intent intent = new Intent(this, UserActivity.class);
         intent.putExtra("imageResId", user.getAvatar());
