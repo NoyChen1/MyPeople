@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserActivity"></activity>
+        <activity android:name=".AddUserActivity"></activity>
+        <activity android:name=".UpdateUserActivity"></activity>
+
+
     </application>
 
 </manifest>

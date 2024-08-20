@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     private MyAdapter adapter = new MyAdapter(MainActivity.this, users, this);
     private UserDatabase usersDB;
     private UserDao userDao;
+    private MaterialButton addUserBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
+        addUserBtn = findViewById(R.id.add_user_btn);
+
         Retrofit retrofit = new Retrofit.Builder().
                 baseUrl(BASE_URL).
                 addConverterFactory(GsonConverterFactory.create()).
@@ -69,7 +76,23 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
             getUsers(client, i+1);
         }
 
+        addUserBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddUserActivity.class);
+                startActivity(intent);
+                Toast.makeText(MainActivity.this, "Add User", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            fetchAndUpdateUsers();
+        });
     }
 
     public void getUsers (Client client, int page){
@@ -84,12 +107,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                             userDao.addUser(user);
                             System.out.println("added user: " + user.getId() + "successfully");
                         }
-                        users = userDao.getAllUsers();
-                        runOnUiThread(() ->{
-                            adapter.setUsers(users);
-                            adapter.notifyDataSetChanged();
-                        });
 
+                        fetchAndUpdateUsers();
                     });
                 }
 
@@ -110,12 +129,21 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         });
     }
 
+    private void fetchAndUpdateUsers() {
+        users = userDao.getAllUsers();
+        runOnUiThread(() ->{
+            adapter.setUsers(users);
+            adapter.notifyDataSetChanged();
+        });
+    }
+
     public void onItemClick(UserData user) {
 
         Intent intent = new Intent(this, UserActivity.class);
         intent.putExtra("imageResId", user.getAvatar());
         intent.putExtra("id", user.getId());
-        intent.putExtra("name", user.getFirst_name() + " " + user.getLast_name());
+        intent.putExtra("first name", user.getFirst_name());
+        intent.putExtra("last name",user.getLast_name());
         intent.putExtra("email", user.getEmail());
         startActivity(intent);
 

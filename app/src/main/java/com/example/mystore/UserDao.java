@@ -17,7 +17,6 @@ public interface UserDao {
 
     @Update
     public void updateUser(UserData user);
-
     @Delete
     public void deleteUser(UserData user);
 

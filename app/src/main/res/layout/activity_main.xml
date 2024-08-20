@@ -7,11 +7,40 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:layout_width="wrap_content"
-       android:layout_height="match_parent"
-       android:id="@+id/recyclerView"
-       />
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:id="@+id/linear1">
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="My People API"
+          android:textSize="40dp"
+          android:gravity="center"
+          android:id="@+id/header_txt"
+          />
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="wrap_content"
+          android:layout_height="0dp"
+          android:layout_weight="1"
+          android:id="@+id/recyclerView"
+          android:layout_below="@id/header_txt"
+          android:layout_above="@id/add_user_btn"
+          />
+      <com.google.android.material.button.MaterialButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="ADD USER"
+          android:gravity="center"
+          android:layout_gravity="center"
+          android:id="@+id/add_user_btn"
+          android:layout_alignParentBottom="true"
+          android:layout_centerHorizontal="true"
+          />
+   </LinearLayout>
+
 
 
 
