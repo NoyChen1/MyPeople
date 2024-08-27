@@ -71,6 +71,32 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(user != null){
+            fetchAndUpdateUser();
+        }
+    }
+
+    private void displayUserData() {
+        if (user != null) {
+            userName.setText(user.getFirst_name() + " " + user.getLast_name());
+            userEmail.setText(user.getEmail());
+            Glide.with(this)
+                    .load(user.getAvatar())
+                    .into(userImage);
+        }
+    }
+
+    private void fetchAndUpdateUser() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            user = userDao.getUser(user.getId());
+            runOnUiThread(this :: displayUserData);
+        });
+    }
+
     private void initialize() {
         userImage = findViewById(R.id.image_view);
         userId = findViewById(R.id.id_txt);

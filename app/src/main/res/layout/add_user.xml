@@ -124,6 +124,13 @@
                 android:textSize="20dp"
                 android:layout_gravity="center"/>
 
+            <ImageView
+                android:id="@+id/image_viewa"
+                android:layout_width="62dp"
+                android:layout_height="74dp"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"/>
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,6 +140,7 @@
                 />
 
         </LinearLayout>
+
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"

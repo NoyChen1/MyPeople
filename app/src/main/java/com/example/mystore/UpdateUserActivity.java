@@ -1,6 +1,8 @@
 package com.example.mystore;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import java.util.concurrent.Executors;
 
 public class UpdateUserActivity extends AppCompatActivity {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
     private MaterialButton uploadImageBtn;
     private MaterialButton updateUserBtn;
     private EditText idTxt;
@@ -28,6 +31,8 @@ public class UpdateUserActivity extends AppCompatActivity {
     private ImageView userImage;
     private UserData updatedUser;
     private UserDatabase userDB;
+    private Uri imageUri;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +47,50 @@ public class UpdateUserActivity extends AppCompatActivity {
                 updatedUser = new UserData(Integer.parseInt(idTxt.getText() + ""),
                         emailTxt.getText() + "", firstNameTxt.getText() + "",
                         lastNameTxt.getText() + "",
-                        "https://reqres.in/img/faces/2-image.jpg");
+                        imageUri != null ? imageUri.toString() : userImage.toString());
 
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                executorService.execute(() ->{
-                    userDB.getUserDao().updateUser(updatedUser);
-                    runOnUiThread(() -> {
-                        Toast.makeText(UpdateUserActivity.this, "User updated successfully!",
-                                Toast.LENGTH_SHORT).show();
-                        finish();
-                    });
+                if(UserValidationUtil.isUserDataValid(updatedUser, UpdateUserActivity.this)){
+                    updateUserInDB();
+                }
+            }
+        });
+
+        uploadImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImageChooser();
+            }
+        });
+
+    }
+
+    private void openImageChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private void updateUserInDB(){
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() ->{
+            if(userDB.getUserDao().getUser(updatedUser.getId()) != null &&
+                    getIntent().getIntExtra("id", -1) != updatedUser.getId()){
+                runOnUiThread(() -> {
+                    Toast.makeText(UpdateUserActivity.this,
+                            "User " + updatedUser.getId() + " is already exists !",
+                            Toast.LENGTH_SHORT).show();
+                });
+            }else {
+                userDB.getUserDao().updateUser(updatedUser);
+                runOnUiThread(() -> {
+                    Toast.makeText(UpdateUserActivity.this, "User updated successfully!",
+                            Toast.LENGTH_SHORT).show();
+                    finish();
                 });
             }
         });
     }
-
     private void getDataFromIntent() {
         String imageResId = getIntent().getStringExtra("imageResId");
         int id = getIntent().getIntExtra("id", -1);
@@ -74,6 +108,7 @@ public class UpdateUserActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+
         uploadImageBtn = findViewById(R.id.upload_image_btn);
         updateUserBtn = findViewById(R.id.update_user_btn);
         idTxt = findViewById(R.id.idu_txt);

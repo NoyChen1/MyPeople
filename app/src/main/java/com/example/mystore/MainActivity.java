@@ -105,24 +105,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                     executorService.execute(() -> {
                         for (UserData user : response.body().getData()) {
                             userDao.addUser(user);
-                            System.out.println("added user: " + user.getId() + "successfully");
                         }
-
                         fetchAndUpdateUsers();
                     });
                 }
 
-/*
-                users = usersDB.getUserDao().getAllUsers();
-                users.addAll(response.body().getData());
-                users.sort((o1, o2) -> {
-                    int compare = Integer.compare(o1.getId(), o2.getId());
-                    return compare;
-                });
-*/
-
             }
-
             @Override
             public void onFailure(Call<UsersData> call, Throwable throwable) {
             }
