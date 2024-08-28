@@ -142,6 +142,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void getDataFromIntent(){
+
         String imageResId = getIntent().getStringExtra("imageResId");
         int id = getIntent().getIntExtra("id", -1);
         String firstName = getIntent().getStringExtra("first name");
@@ -155,6 +156,7 @@ public class UserActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(imageResId)
                 .into(userImage);
+
         userId.setText(id + "");
         userName.setText(name);
         userEmail.setText(email);

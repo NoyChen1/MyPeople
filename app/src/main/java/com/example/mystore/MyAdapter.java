@@ -39,6 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.lastName.setText(user.getLast_name());
         holder.email.setText(user.getEmail());
         String avatarUrl = user.getAvatar();
+
         Glide.with(holder.itemView.getContext())
                 .load(avatarUrl)
                 .into(holder.avatar);

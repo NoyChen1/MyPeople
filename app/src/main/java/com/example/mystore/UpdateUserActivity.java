@@ -41,13 +41,14 @@ public class UpdateUserActivity extends AppCompatActivity {
 
         initialize();
         getDataFromIntent();
+
         updateUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updatedUser = new UserData(Integer.parseInt(idTxt.getText() + ""),
                         emailTxt.getText() + "", firstNameTxt.getText() + "",
                         lastNameTxt.getText() + "",
-                        imageUri != null ? imageUri.toString() : userImage.toString());
+                        imageUri != null ? imageUri.toString() : getIntent().getStringExtra("imageResId"));
 
                 if(UserValidationUtil.isUserDataValid(updatedUser, UpdateUserActivity.this)){
                     updateUserInDB();
@@ -64,6 +65,19 @@ public class UpdateUserActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK &&
+                data != null && data.getData() != null){
+            imageUri = data.getData();
+
+            //dispaly the selected image in the imageView
+            userImage.setImageURI(imageUri);
+        }
+    }
+
     private void openImageChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -74,17 +88,17 @@ public class UpdateUserActivity extends AppCompatActivity {
     private void updateUserInDB(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() ->{
-            if(userDB.getUserDao().getUser(updatedUser.getId()) != null &&
-                    getIntent().getIntExtra("id", -1) != updatedUser.getId()){
+            if(userDB.getUserDao().getUser(updatedUser.getId()) != null && //no user like this in db
+                    getIntent().getIntExtra("id", -1) != updatedUser.getId()){ //and this is the same user
                 runOnUiThread(() -> {
-                    Toast.makeText(UpdateUserActivity.this,
+                    Toast.makeText(this,
                             "User " + updatedUser.getId() + " is already exists !",
                             Toast.LENGTH_SHORT).show();
                 });
             }else {
                 userDB.getUserDao().updateUser(updatedUser);
                 runOnUiThread(() -> {
-                    Toast.makeText(UpdateUserActivity.this, "User updated successfully!",
+                    Toast.makeText(this, "User " + updatedUser.getId() + " updated successfully!",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 });
@@ -98,9 +112,11 @@ public class UpdateUserActivity extends AppCompatActivity {
         String lastName = getIntent().getStringExtra("last name");
         String email = getIntent().getStringExtra("email");
 
+
         Glide.with(this)
                 .load(imageResId)
                 .into(userImage);
+
         idTxt.setText(id + "");
         firstNameTxt.setText(firstName);
         lastNameTxt.setText(lastName);

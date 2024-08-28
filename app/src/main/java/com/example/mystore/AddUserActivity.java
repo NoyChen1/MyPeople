@@ -104,7 +104,7 @@ public class AddUserActivity extends AppCompatActivity {
             }else{
                 userDB.getUserDao().addUser(newUser);
                 runOnUiThread(() -> {
-                    Toast.makeText(AddUserActivity.this, "User added successfully!",
+                    Toast.makeText(AddUserActivity.this, "User " + newUser.getId() + " added successfully!",
                             Toast.LENGTH_SHORT).show();
                     finish();
                 });
