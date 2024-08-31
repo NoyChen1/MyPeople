@@ -1,8 +1,12 @@
 package com.example.mystore;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +18,7 @@ import androidx.room.Room;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.io.FileOutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,18 +43,7 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_user);
 
-        userDB = Room.databaseBuilder(getApplicationContext(),
-                UserDatabase.class, "UsersDB").build();
-
-
-        uploadImageBtn = findViewById(R.id.upload_image_btn);
-        addUserBtn = findViewById(R.id.add_new_user_btn);
-        idTxt = findViewById(R.id.id_txt);
-        firstNameTxt = findViewById(R.id.first_name_txt);
-        lastNameTxt = findViewById(R.id.last_name_txt);
-        emailTxt = findViewById(R.id.email_txt);
-        avatarImage = findViewById(R.id.image_viewa);
-
+        Initialize();
         uploadImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,6 +64,20 @@ public class AddUserActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void Initialize() {
+
+        uploadImageBtn = findViewById(R.id.upload_image_btn);
+        addUserBtn = findViewById(R.id.add_new_user_btn);
+        idTxt = findViewById(R.id.id_txt);
+        firstNameTxt = findViewById(R.id.first_name_txt);
+        lastNameTxt = findViewById(R.id.last_name_txt);
+        emailTxt = findViewById(R.id.email_txt);
+        avatarImage = findViewById(R.id.image_viewa);
+
+        userDB = Room.databaseBuilder(getApplicationContext(),
+                UserDatabase.class, "UsersDB").build();
     }
 
     @Override
@@ -101,12 +109,31 @@ public class AddUserActivity extends AppCompatActivity {
                             "User " + newUser.getId() + " is already exists !",
                             Toast.LENGTH_SHORT).show();
                 });
+            }else if (userDB.getUserDao().getUser(newUser.getEmail()) != null) {
+                runOnUiThread(() -> {
+                    Toast.makeText(AddUserActivity.this,
+                            "Email is already exists !",
+                            Toast.LENGTH_SHORT).show();
+                });
             }else{
                 userDB.getUserDao().addUser(newUser);
                 runOnUiThread(() -> {
                     Toast.makeText(AddUserActivity.this, "User " + newUser.getId() + " added successfully!",
                             Toast.LENGTH_SHORT).show();
+
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        Intent intent = new Intent(AddUserActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+                    }, 200);  // 200ms delay
+
+                    /*
+                    Intent intent = new Intent(AddUserActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
                     finish();
+                     */
                 });
             }
         });

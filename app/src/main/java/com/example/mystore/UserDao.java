@@ -14,6 +14,8 @@ import java.util.List;
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void addUser(UserData user);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addAllUsers(List<UserData> users);
     @Update
     public void updateUser(UserData user);
     @Delete
@@ -21,8 +23,11 @@ public interface UserDao {
 
     @Query("SELECT * FROM Users WHERE id == :userId")
     public UserData getUser(int userId);
+    @Query("SELECT * FROM Users WHERE email == :userEmail")
+    public UserData getUser(String userEmail);
     @Query("SELECT * FROM Users")
     public List<UserData> getAllUsers();
     @Query("DELETE FROM Users")
     public void delete();
+
 }

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -88,11 +90,18 @@ public class UpdateUserActivity extends AppCompatActivity {
     private void updateUserInDB(){
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() ->{
-            if(userDB.getUserDao().getUser(updatedUser.getId()) != null && //no user like this in db
+            if(userDB.getUserDao().getUser(updatedUser.getId()) != null && //no exists in DB
                     getIntent().getIntExtra("id", -1) != updatedUser.getId()){ //and this is the same user
                 runOnUiThread(() -> {
                     Toast.makeText(this,
                             "User " + updatedUser.getId() + " is already exists !",
+                            Toast.LENGTH_SHORT).show();
+                });
+            }else if (userDB.getUserDao().getUser(updatedUser.getEmail()) != null &&
+                    !(getIntent().getStringExtra("email").equals(updatedUser.getEmail()))) {
+                runOnUiThread(() -> {
+                    Toast.makeText(UpdateUserActivity.this,
+                            "Email is already exists !",
                             Toast.LENGTH_SHORT).show();
                 });
             }else {
@@ -100,7 +109,20 @@ public class UpdateUserActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "User " + updatedUser.getId() + " updated successfully!",
                             Toast.LENGTH_SHORT).show();
+
+                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                        Intent intent = new Intent(UpdateUserActivity.this, UserActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+                    }, 200);  // 200ms delay
+
+                        /*
+                    Intent intent = new Intent(UpdateUserActivity.this, UserActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
                     finish();
+                         */
                 });
             }
         });
@@ -112,6 +134,8 @@ public class UpdateUserActivity extends AppCompatActivity {
         String lastName = getIntent().getStringExtra("last name");
         String email = getIntent().getStringExtra("email");
 
+      //  user = new UserData(id, email, firstName, lastName,
+        //        Uri.parse(userImage.getTag().toString()) + "");
 
         Glide.with(this)
                 .load(imageResId)

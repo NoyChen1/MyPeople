@@ -43,7 +43,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         Glide.with(holder.itemView.getContext())
                 .load(avatarUrl)
                 .into(holder.avatar);
+
         //  holder.avatar.setImageResource(users.get(position).getAvatar());
+
         holder.bind(user, listener);
     }
 

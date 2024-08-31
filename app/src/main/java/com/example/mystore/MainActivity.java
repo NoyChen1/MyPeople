@@ -36,12 +36,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
 
     final String BASE_URL = "https://reqres.in/";
-
     private List<UserData> users = new LinkedList<>();
     private MyAdapter adapter = new MyAdapter(MainActivity.this, users, this);
     private UserDatabase usersDB;
     private UserDao userDao;
     private MaterialButton addUserBtn;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private boolean loading = true;
+    private int currentPage = 1;
+    private Client client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +62,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 UserDatabase.class, "UsersDB").build();
         userDao = usersDB.getUserDao();
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+
 
         addUserBtn = findViewById(R.id.add_user_btn);
 
@@ -70,8 +76,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 build();
 
 
-        Client client = retrofit.create(Client.class);
+        client = retrofit.create(Client.class);
 
+        loadPage(currentPage);
         for(int i=0; i < 2; i++){
             getUsers(client, i+1);
         }
@@ -84,6 +91,32 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 Toast.makeText(MainActivity.this, "Add User", Toast.LENGTH_SHORT).show();
             }
         });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = linearLayoutManager.getChildCount();
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if(dy > 0 ){
+                    if(loading){
+                        if((visibleItemCount + pastVisibleItems) >= totalItemCount){
+                            loading = false;
+                            currentPage++;
+                            loadPage(currentPage);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadPage(int currentPage) {
+        Toast.makeText(MainActivity.this, "Loading Page " + currentPage, Toast.LENGTH_SHORT).show();
+        getUsers(client, currentPage);
     }
 
     @Override
@@ -103,20 +136,32 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 if(response != null && response.isSuccessful()){
                     ExecutorService executorService = Executors.newSingleThreadExecutor();
                     executorService.execute(() -> {
-                        for (UserData user : response.body().getData()) {
-                            userDao.addUser(user);
+                        List<UserData> newUsers = response.body().getData();
+                        if(newUsers != null && !newUsers.isEmpty()){
+                            userDao.addAllUsers(newUsers);
+                            fetchAndUpdateUsers();
+                            loading = true;
+                        }else {
+                            runOnUiThread(() -> Toast.makeText(MainActivity.this,
+                                    "No more data", Toast.LENGTH_SHORT).show());
                         }
-                        fetchAndUpdateUsers();
+//                        for (UserData user : response.body().getData()) {
+//                            userDao.addUser(user);
+//                        }
                     });
+                }else {
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this,
+                            "Failed to load data", Toast.LENGTH_SHORT).show());
                 }
 
             }
             @Override
             public void onFailure(Call<UsersData> call, Throwable throwable) {
+                runOnUiThread(() -> Toast.makeText(MainActivity.this,
+                        "Failed to load data", Toast.LENGTH_SHORT).show());
             }
         });
     }
-
     private void fetchAndUpdateUsers() {
         users = userDao.getAllUsers();
         runOnUiThread(() ->{
@@ -138,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         // Handle the click event here
         Toast.makeText(this, "Clicked: " + user.getFirst_name(), Toast.LENGTH_SHORT).show();
     }
+
 
 
 }

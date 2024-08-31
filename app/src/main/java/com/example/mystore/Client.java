@@ -1,15 +1,15 @@
-package com.example.mystore;
+    package com.example.mystore;
 
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+    import retrofit2.Call;
+    import retrofit2.http.GET;
+    import retrofit2.http.Path;
+    import retrofit2.http.Query;
 
-public interface Client {
+    public interface Client {
 
-    @GET("/api/users/{uid}")
-    Call<UserResponse> getUser(@Path("uid") String uid);
+        @GET("/api/users/{uid}")
+        Call<UserResponse> getUser(@Path("uid") String uid);
 
-    @GET("/api/users")
-    Call<UsersData> getUsers(@Query("page") int page);
-}
+        @GET("/api/users")
+        Call<UsersData> getUsers(@Query("page") int page);
+    }

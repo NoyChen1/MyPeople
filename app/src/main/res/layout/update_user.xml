@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/light_blue_background"
     android:gravity="center">
 
     <LinearLayout
@@ -13,8 +14,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Update New User"
-            android:textSize="40dp"
+            android:text="Update User"
+            style="@style/PrimaryTextStyle"
             android:layout_marginBottom="40dp"
             android:gravity="center"/>
 
@@ -33,12 +34,12 @@
                 android:text="ID: "
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="20dp"/>
+                style="@style/TextStyle" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="15dp"
+                android:textSize="14sp"
                 android:id="@+id/idu_txt"/>
         </LinearLayout>
 
@@ -56,11 +57,12 @@
                 android:text="First Name: "
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="20dp"/>
+                style="@style/TextStyle"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="14sp"
                 android:id="@+id/first_nameu_txt"/>
         </LinearLayout>
 
@@ -78,11 +80,12 @@
                 android:text="Last Name: "
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="20dp"/>
+                style="@style/TextStyle"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="14sp"
                 android:id="@+id/last_nameu_txt"/>
         </LinearLayout>
 
@@ -100,11 +103,12 @@
                 android:text="Email: "
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="20dp"/>
+                style="@style/TextStyle"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="14sp"
                 android:id="@+id/emailu_txt"/>
         </LinearLayout>
 
@@ -121,7 +125,7 @@
                 android:text="Avatar: "
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:textSize="20dp"
+                style="@style/TextStyle"
                 android:layout_gravity="center"/>
 
             <ImageView
@@ -135,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Upload Image"
+                style="@style/MiniButton"
                 android:layout_gravity="center"
                 android:id="@+id/upload_image_btn"
                 />
@@ -145,6 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="UPDATE USER"
+            style="@style/PrimaryButton"
             android:gravity="center"
             android:layout_gravity="center"
             android:id="@+id/update_user_btn"

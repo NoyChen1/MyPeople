@@ -2,24 +2,32 @@ package com.example.mystore;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class UserActivity extends AppCompatActivity {
-
     private ImageView userImage;
     private TextView userId;
     private TextView userName;
@@ -47,7 +55,8 @@ public class UserActivity extends AppCompatActivity {
                 Intent intent = new Intent(UserActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-                finish();            }
+                finish();
+            }
         });
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +107,8 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        userImage = findViewById(R.id.image_view);
+
+        userImage = findViewById(R.id.image_viewua);
         userId = findViewById(R.id.id_txt);
         userName = findViewById(R.id.name_txt);
         userEmail = findViewById(R.id.email_txt);
@@ -124,7 +134,7 @@ public class UserActivity extends AppCompatActivity {
                 executorService.execute(() -> {
                     userDao.deleteUser(user);
                     runOnUiThread(() -> {
-                        Toast.makeText(UserActivity.this, "Action confirmed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserActivity.this, "User " + user.getId() + " deleted !", Toast.LENGTH_SHORT).show();
                         finish();
                     });
                 });
@@ -155,6 +165,21 @@ public class UserActivity extends AppCompatActivity {
         // Set data to views
         Glide.with(this)
                 .load(imageResId)
+                /*.error(R.drawable.err_image)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        Toast.makeText(UserActivity.this, "Failed load image", Toast.LENGTH_SHORT).show();
+                        Log.e("Glide", "Failed load image");
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        Toast.makeText(UserActivity.this, "Image loaded", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                })*/
                 .into(userImage);
 
         userId.setText(id + "");

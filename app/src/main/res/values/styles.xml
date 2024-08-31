@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_200</item>
+    </style>
+
+
+    <!-- Custom Button Style -->
+    <style name="PrimaryButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/blue_500</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="elevation">4dp</item>
+    </style>
+
+    <!-- Custom Button Style -->
+    <style name="MiniButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/blue_500</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="elevation">4dp</item>
+    </style>
+
+    <!-- Primary Text Style -->
+    <style name="PrimaryTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnBackground</item> <!-- Text color -->
+        <item name="android:textSize">40sp</item> <!-- Text size -->
+        <item name="android:lineSpacingExtra">4dp</item> <!-- Extra line spacing -->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Text Style -->
+    <style name="TextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnBackground</item> <!-- Text color -->
+        <item name="android:textSize">20sp</item> <!-- Text size -->
+        <item name="android:lineSpacingExtra">4dp</item> <!-- Extra line spacing -->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Name Text Style -->
+    <style name="NameTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnBackground</item> <!-- Text color -->
+        <item name="android:textSize">30sp</item> <!-- Text size -->
+        <item name="android:lineSpacingExtra">4dp</item> <!-- Extra line spacing -->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Email Text Style -->
+    <style name="EmailTextStyle" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorOnBackground</item> <!-- Text color -->
+        <item name="android:textSize">15sp</item> <!-- Text size -->
+        <item name="android:lineSpacingExtra">4dp</item> <!-- Extra line spacing -->
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

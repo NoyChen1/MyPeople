@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/light_blue_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,7 +14,7 @@
         android:id="@+id/linear3">
 
         <ImageView
-        android:id="@+id/image_view"
+        android:id="@+id/image_viewua"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:gravity="center"
@@ -25,7 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="ID"
-            android:textSize="20sp"/>
+            style="@style/TextStyle"/>
 
         <TextView
             android:id="@+id/name_txt"
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Name"
-            android:textSize="30sp"/>
+            style="@style/NameTextStyle"/>
 
         <TextView
             android:id="@+id/email_txt"
@@ -41,13 +42,14 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="email@email.com"
-            android:textSize="15sp"/>
+            style="@style/EmailTextStyle"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"
+            style="@style/MiniButton"
             android:text="Back"/>
     </LinearLayout>
 
@@ -64,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete User"
+            style="@style/PrimaryButton"
             android:layout_marginRight="5dp"/>
 
         <com.google.android.material.button.MaterialButton
@@ -71,6 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update User"
+            style="@style/PrimaryButton"
+
             android:layout_marginLeft="5dp"/>
 
     </LinearLayout>
