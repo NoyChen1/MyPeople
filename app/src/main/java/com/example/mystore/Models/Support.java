@@ -1,4 +1,4 @@
-package com.example.mystore;
+package com.example.mystore.Models;
 
 public class Support {
     private String url;

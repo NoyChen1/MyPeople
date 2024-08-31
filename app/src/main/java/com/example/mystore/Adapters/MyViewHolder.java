@@ -1,4 +1,4 @@
-package com.example.mystore;
+package com.example.mystore.Adapters;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,6 +6,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mystore.Models.OnItemClickListener;
+import com.example.mystore.R;
+import com.example.mystore.Models.UserData;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
 

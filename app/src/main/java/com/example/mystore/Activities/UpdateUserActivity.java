@@ -1,4 +1,4 @@
-package com.example.mystore;
+package com.example.mystore.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.example.mystore.R;
+import com.example.mystore.Models.UserData;
+import com.example.mystore.DataBase.UserDatabase;
+import com.example.mystore.Utils.UserValidationUtil;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.concurrent.ExecutorService;

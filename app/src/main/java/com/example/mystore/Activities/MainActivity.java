@@ -1,10 +1,8 @@
-package com.example.mystore;
+package com.example.mystore.Activities;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,9 +15,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.mystore.Network.Client;
+import com.example.mystore.Adapters.MyAdapter;
+import com.example.mystore.Models.OnItemClickListener;
+import com.example.mystore.R;
+import com.example.mystore.DataBase.UserDao;
+import com.example.mystore.Models.UserData;
+import com.example.mystore.DataBase.UserDatabase;
+import com.example.mystore.Models.UsersData;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.LinkedList;

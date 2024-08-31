@@ -1,12 +1,10 @@
-package com.example.mystore;
+package com.example.mystore.Activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,9 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.example.mystore.R;
+import com.example.mystore.Models.UserData;
+import com.example.mystore.DataBase.UserDatabase;
+import com.example.mystore.Utils.UserValidationUtil;
 import com.google.android.material.button.MaterialButton;
 
-import java.io.FileOutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

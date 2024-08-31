@@ -22,7 +22,7 @@
         android:theme="@style/Theme.MyStore"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,17 +32,17 @@
         </activity>
 
         <activity
-            android:name=".UserActivity"
+            android:name=".Activities.UserActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity
-            android:name=".AddUserActivity"
+            android:name=".Activities.AddUserActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity
-            android:name=".UpdateUserActivity"
+            android:name=".Activities.UpdateUserActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
 

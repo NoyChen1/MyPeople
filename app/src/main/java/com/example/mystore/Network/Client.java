@@ -1,4 +1,7 @@
-    package com.example.mystore;
+    package com.example.mystore.Network;
+
+    import com.example.mystore.Models.UserResponse;
+    import com.example.mystore.Models.UsersData;
 
     import retrofit2.Call;
     import retrofit2.http.GET;

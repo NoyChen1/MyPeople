@@ -1,10 +1,11 @@
-package com.example.mystore;
+package com.example.mystore.Utils;
 
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
+
+import com.example.mystore.Models.UserData;
 
 public class UserValidationUtil extends AppCompatActivity {
 

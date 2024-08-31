@@ -1,4 +1,4 @@
-package com.example.mystore;
+package com.example.mystore.Models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
