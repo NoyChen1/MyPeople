@@ -16,6 +16,7 @@ MyPeople is an Android application designed to manage user profiles, including a
 - Android Studio
 - Java Development Kit (JDK) 8 or higher
 - An Android device or emulator
+
 ### Installation
 
 1. **Clone the Repository**
@@ -23,3 +24,5 @@ MyPeople is an Android application designed to manage user profiles, including a
    ```bash
    git clone https://github.com/NoyChen1/MyPeople.git
    
+# **YouTube Video**
+   https://youtu.be/Njmgh9LoCgQ
