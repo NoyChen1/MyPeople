@@ -28,11 +28,11 @@ MyPeople is an Android application designed to manage user profiles, including a
 1. **Image Uploading**
 One significant challenge was implementing the image uploading feature in the Android app. Initially, the goal was to allow users to upload profile pictures which would be saved and displayed within the app. Here are the key issues faced:
 
-**Handling Image URIs:** The app needed to correctly handle image URIs from the device’s storage.
+- **Handling Image URIs:** The app needed to correctly handle image URIs from the device’s storage.
 
-**Saving Images Efficiently:** To manage user profile images effectively, it was necessary to save them in a way that persisted across app sessions.
+- **Saving Images Efficiently:** To manage user profile images effectively, it was necessary to save them in a way that persisted across app sessions.
 
-**User Experience:** Ensuring a smooth user experience while uploading images was crucial. 
+- **User Experience:** Ensuring a smooth user experience while uploading images was crucial. 
 
 2. **Integrating the New Room Library**
 Learning a New Library
