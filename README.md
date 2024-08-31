@@ -24,5 +24,5 @@ MyPeople is an Android application designed to manage user profiles, including a
    ```bash
    git clone https://github.com/NoyChen1/MyPeople.git
    
-# **YouTube Video**
+#### **YouTube Video**
    https://youtu.be/Njmgh9LoCgQ
